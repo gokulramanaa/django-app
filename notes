@@ -1,0 +1,8 @@
+# ssh into machine if needed
+# install docker based on os (eg https://oracle-base.com/articles/linux/docker-install-docker-on-oracle-linux-ol8)
+# scp local remote 
+
+sudo docker build -t flask-app-1006:latest .
+sudo docker run -d -p 5000:5000 flask-app-1006
+
+curl localhost:5000
