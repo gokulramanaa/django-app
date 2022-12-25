@@ -1,4 +1,4 @@
-"""hello_world URL Configuration
+"""app URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
@@ -20,6 +20,7 @@ from app.core import views as core_views
 
 urlpatterns = [
     path("", core_views.index),
+    path("names/", core_views.names),
     path("admin/", admin.site.urls),
     path("__reload__/", include("django_browser_reload.urls")),
 ]
