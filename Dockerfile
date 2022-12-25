@@ -24,4 +24,4 @@ USER appuser
 
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
 # This command isn't correct, can't find the right path to wsgi
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--chdir", "azureproject", "azureproject.wsgi"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app.wsgi:application"]
