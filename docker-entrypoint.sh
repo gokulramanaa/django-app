@@ -2,10 +2,10 @@
 # docker-entrypoint.sh
 
 
-if [[ -f ./modaldata.pkl ]]
-then
-  touch ./modaldata.pkl
-fi
+# if [[ -f /django-app/app/core/modaldata.pkl ]]
+# then
+#   touch /django-app/app/core/modaldata.pkl
+# fi
 
 # If this is going to be a cron container, set up the crontab.
 # if [ "$1" = cron ]; then

@@ -161,7 +161,7 @@ class NameGenerator():
         return loss, gradients, a[len(X)-1]
 
 
-    def model(self, num_iterations=50000, n_a=50, dino_names=7, vocab_size=27):
+    def model(self, num_iterations=10000, n_a=50, dino_names=7, vocab_size=27):
         """
         Trains the self.model and generates dinosaur names. 
 
@@ -243,7 +243,7 @@ class NameGenerator():
         return parameters, res
 
     def get_names(self, num_result=10):
-        with open("./modaldata.pkl", "rb") as outfile:
+        with open(os.path.join(settings.DATA_DIR, "modaldata.pkl"), "rb") as outfile:
             parameters = pickle.load(outfile)
 
         if not parameters:
@@ -259,7 +259,8 @@ class NameGenerator():
     def set_values(self,):
         parameters, res = self.model()
         print(type(parameters))
-        with open("./modaldata.pkl", "rb") as infile:
+        print(os.path.join(settings.DATA_DIR, "modaldata.pkl"))
+        with open(os.path.join(settings.DATA_DIR, "modaldata.pkl"), "rb") as infile:
             try:
                 values = pickle.load(infile)
             except:
@@ -267,6 +268,6 @@ class NameGenerator():
             values.update(parameters)
 
         print(values, type(values))
-        with open("./modaldata.pkl", "wb") as outfile:
+        with open(os.path.join(settings.DATA_DIR, "modaldata.pkl"), "wb") as outfile:
             pickle.dump(values, outfile)
 
