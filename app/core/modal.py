@@ -1,9 +1,13 @@
 import numpy as np
 import os
 import random
+import json
 from app.core.utils import *
 from django.conf import settings
+import pickle
 
+char_to_ix = {'\n': 0, 'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7, 'h': 8, 'i': 9, 'j': 10, 'k': 11, 'l': 12, 'm': 13, 'n': 14, 'o': 15, 'p': 16, 'q': 17, 'r': 18, 's': 19, 't': 20, 'u': 21, 'v': 22, 'w': 23, 'x': 24, 'y': 25, 'z': 26}
+ix_to_char = {0: '\n', 1: 'a', 2: 'b', 3: 'c', 4: 'd', 5: 'e', 6: 'f', 7: 'g', 8: 'h', 9: 'i', 10: 'j', 11: 'k', 12: 'l', 13: 'm', 14: 'n', 15: 'o', 16: 'p', 17: 'q', 18: 'r', 19: 's', 20: 't', 21: 'u', 22: 'v', 23: 'w', 24: 'x', 25: 'y', 26: 'z'}
 
 class NameGenerator():
     def __init__(self) -> None:
@@ -34,20 +38,20 @@ class NameGenerator():
         return gradients
 
 
-    def setup(self):
-        data = open(os.path.join(settings.DATA_DIR, 'girlname.txt'), 'r').read()
-        data = data.lower()
-        chars = list(set(data))
-        data_size, vocab_size = len(data), len(chars)
-        print('There are %d total characters and %d unique characters in your data.' % (
-            data_size, vocab_size))
+    # def setup(self):
+    #     data = open(os.path.join(settings.DATA_DIR, 'girlname.txt'), 'r').read()
+    #     data = data.lower()
+    #     chars = list(set(data))
+    #     data_size, vocab_size = len(data), len(chars)
+    #     print('There are %d total characters and %d unique characters in your data.' % (
+    #         data_size, vocab_size))
 
-        char_to_ix = {ch: i for i, ch in enumerate(sorted(chars))}
-        ix_to_char = {i: ch for i, ch in enumerate(sorted(chars))}
-        return (data, char_to_ix, ix_to_char)
+    #     char_to_ix = {ch: i for i, ch in enumerate(sorted(chars))}
+    #     ix_to_char = {i: ch for i, ch in enumerate(sorted(chars))}
+    #     return (data, char_to_ix, ix_to_char)
 
 
-    def sample(self, parameters, char_to_ix, seed):
+    def sample(self, parameters, seed):
         """
         self.sample a sequence of characters according to a sequence of probability distributions output of the RNN
 
@@ -157,7 +161,7 @@ class NameGenerator():
         return loss, gradients, a[len(X)-1]
 
 
-    def model(self, data, ix_to_char, char_to_ix, num_iterations=20000, n_a=50, dino_names=7, vocab_size=27):
+    def model(self, num_iterations=10000, n_a=50, dino_names=7, vocab_size=27):
         """
         Trains the self.model and generates dinosaur names. 
 
@@ -227,7 +231,7 @@ class NameGenerator():
                 for name in range(dino_names):
 
                     # self.sample indices and print them
-                    self.sampled_indices = self.sample(parameters, char_to_ix, seed)
+                    self.sampled_indices = self.sample(parameters, seed)
                     # print_sample(self.sampled_indices, ix_to_char)
                     res.append(get_sample(self.sampled_indices, ix_to_char))
 
@@ -238,7 +242,31 @@ class NameGenerator():
 
         return parameters, res
 
-    def get_names(self):
-        data, char_to_ix, ix_to_char = self.setup()
-        parameters, res = self.model(data, ix_to_char, char_to_ix)
+    def get_names(self, num_result=10):
+        with open("./modaldata.pkl", "rb") as outfile:
+            parameters = pickle.load(outfile)
+
+        if not parameters:
+            return []
+        res = []
+        seed = random.randrange(100)
+        for _ in range(int(num_result)):
+            self.sampled_indices = self.sample(parameters, seed)
+            res.append(get_sample(self.sampled_indices, ix_to_char))
+            seed += 1
         return res
+
+    def set_values(self,):
+        parameters, res = self.model()
+        print(type(parameters))
+        with open("./modaldata.pkl", "rb") as infile:
+            try:
+                values = pickle.load(infile)
+            except:
+                values = {}
+            values.update(parameters)
+
+        print(values, type(values))
+        with open("./modaldata.pkl", "wb") as outfile:
+            pickle.dump(values, outfile)
+

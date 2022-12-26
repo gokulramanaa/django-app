@@ -1,10 +1,20 @@
 version: '3.4'
 
 services:
-  msdocspythondjangocontainerwebappdev:
-    image: msdocspythondjangocontainerwebappdev
+  webapp:
+    image: django-web-app
     build:
       context: .
       dockerfile: ./Dockerfile
     ports:
       - 8000:8000
+  # cron:
+  #   build:
+  #     context: .
+  #     dockerfile: ./Dockerfile
+  #   restart: unless-stopped
+  #   # env_file:
+  #   # - .env
+  #   # depends_on:
+  #   #   - db
+  #   command: cron -f  # as a long-running foreground process

@@ -38,6 +38,7 @@ if 'CODESPACE_NAME' in os.environ:
 
 INSTALLED_APPS = [
     "django.contrib.admin",
+    "django_cron",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -56,6 +57,21 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
+
+# CRONJOBS = [
+#     ('* * * * *', 'app.core.cron.cron_job'),
+# ]
+
+CRON_CLASSES = [
+    "app.core.cron.CronJob",
+    # ...
+]
+
+REST_FRAMEWORK = {
+  'DEFAULT_PERMISSION_CLASSES': [
+      'rest_framework.permissions.AllowAny',
+  ],
+}
 
 X_FRAME_OPTIONS = "ALLOW-FROM preview.app.github.dev"
 
