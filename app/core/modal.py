@@ -161,7 +161,7 @@ class NameGenerator():
         return loss, gradients, a[len(X)-1]
 
 
-    def model(self, num_iterations=10000, n_a=50, dino_names=7, vocab_size=27):
+    def model(self, num_iterations=50000, n_a=50, dino_names=7, vocab_size=27):
         """
         Trains the self.model and generates dinosaur names. 
 
