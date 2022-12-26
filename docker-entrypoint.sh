@@ -12,6 +12,9 @@ fi
 #   ./manage.py runcrons
 # fi
 
+python3 manage.py makemigrations
+python3 manage.py migrate
+
 ./manage.py runcrons
 # Launch the main container command passed as arguments.
 exec "$@"
