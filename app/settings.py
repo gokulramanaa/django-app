@@ -25,9 +25,16 @@ BASE_DIR_MAIN = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = "django-insecure-rc@04_mry_3-$@2sq$b9%-9jp6q2eyxf4bsw9&&esj++aw&r)p"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://localhost:8000',
+    'http://localhost:8080',
+    ]
 
 if 'CODESPACE_NAME' in os.environ:
     codespace_name = os.getenv("CODESPACE_NAME")
@@ -40,6 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.admin",
     "django_cron",
     "django.contrib.auth",
+    "corsheaders",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
@@ -52,6 +60,8 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
